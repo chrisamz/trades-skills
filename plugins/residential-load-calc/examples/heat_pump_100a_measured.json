@@ -1,0 +1,9 @@
+{
+  "job": "Lopez residence - replace gas furnace with heat pump, 100 A service",
+  "edition": "2023",
+  "method": "220.87",
+  "system": {"voltage": 240, "service_rating_a": 100},
+  "hvac": [{"type": "heat_pump", "name": "3 ton heat pump", "va": 5500, "new": true},
+           {"type": "supplemental_heat", "name": "5 kW strip", "va": 5000, "new": true}],
+  "measured": {"peak_kw": 7.9, "basis": "utility_12mo", "has_pv_or_storage": false}
+}

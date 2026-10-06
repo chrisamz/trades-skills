@@ -1,0 +1,66 @@
+{
+  "job": "Smith residence - add 48 A EV charger",
+  "edition": "2023",
+  "method": "220.83",
+  "system": {
+    "voltage": 240,
+    "service_rating_a": 200
+  },
+  "dwelling": {
+    "floor_area_sqft": 2400,
+    "small_appliance_circuits": 2,
+    "laundry_circuits": 1
+  },
+  "appliances": [
+    {
+      "name": "Range",
+      "va": 12000
+    },
+    {
+      "name": "Dryer",
+      "va": 5000
+    },
+    {
+      "name": "Water heater",
+      "va": 4500
+    },
+    {
+      "name": "Dishwasher",
+      "va": 1200
+    },
+    {
+      "name": "Disposal",
+      "amps": 7.2,
+      "volts": 120
+    }
+  ],
+  "hvac": [
+    {
+      "type": "ac",
+      "name": "3.5 ton condenser + air handler",
+      "va": 6000
+    },
+    {
+      "type": "space_heat",
+      "name": "Electric furnace",
+      "va": 10000,
+      "units": 1
+    }
+  ],
+  "evse": [
+    {
+      "name": "Wall connector",
+      "amps": 48,
+      "new": true
+    }
+  ],
+  "options": {},
+  "measured": {
+    "peak_kw": null,
+    "peak_amps": null,
+    "basis": "utility_12mo",
+    "power_factor": 1.0,
+    "has_pv_or_storage": false,
+    "removed_va": 0
+  }
+}

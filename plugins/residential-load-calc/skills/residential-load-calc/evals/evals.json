@@ -1,0 +1,48 @@
+{
+  "skill_name": "residential-load-calc",
+  "evals": [
+    {
+      "id": 1,
+      "name": "ev-charger-existing-200a",
+      "prompt": "got a customer with a 200A service, 2400 sq ft house, wants a 48 amp tesla wall connector. existing stuff: electric range 12kw, dryer 5kw, 4500w water heater, dishwasher 1200w, disposal 7.2A at 120, 3.5 ton AC about 6000 VA with a 10kw electric furnace. we're on 2023 NEC. does it fit or am i selling a panel upgrade? need something i can attach to the permit",
+      "expected_output": "220.83(A) worksheet: 27,514 VA, 114.6 A, fits on 200 A. Shows the EVSE-at-100% and 125% alternates (143.4 A and 155.4 A), which still fit. Section cites on each line.",
+      "files": [],
+      "assertions": [
+        "States the calculated load as 114.6 A (or 27,514 VA) under 220.83",
+        "States that the load fits on the 200 A service",
+        "Cites NEC section numbers for the method (220.83)",
+        "Shows the result under at least one stricter EV charger reading (143.4 A at 100% or 155.4 A at 125%)",
+        "Includes a line-item worksheet table suitable for a permit attachment"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "homeowner-100a-heat-pump-measured",
+      "prompt": "I have a 100 amp panel and I'm replacing my gas furnace with a heat pump (installer says the outdoor unit is about 5500 VA and there's a 5 kW backup heat strip). I pulled my utility data and my highest demand in the last 12 months was 7.9 kW. No solar. Installer says I need a 200 amp upgrade before they'll do it. Is that true? I'm in Colorado.",
+      "expected_output": "Uses 220.87 with 12-month data: 7.9 kW x 1.25 = 9,875 VA plus 10,500 VA new = 20,375 VA, 84.9 A, fits on 100 A with about 15 A headroom. Addresses the adopted edition, flags that the kW figure must be an interval demand peak, and tells the homeowner to take the worksheet to the installer and building department instead of declaring the installer wrong.",
+      "files": [],
+      "assertions": [
+        "Uses the recorded-demand method (220.87): 125% of the 7.9 kW peak plus the new load",
+        "States a calculated load of about 84.9 A (20,375 VA)",
+        "Concludes the 100 A service has capacity under this method",
+        "Warns that the 7.9 kW figure must be an interval demand peak (15-minute or hourly), not derived from monthly energy",
+        "Addresses which NEC edition applies in Colorado or tells the user to confirm it locally",
+        "Advises taking the calculation to the installer or building department rather than simply declaring the installer wrong"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "tight-125a-picky-inspector",
+      "prompt": "125 amp service, 1800 sq ft, 2020 NEC. Range 10kw, dryer 5kw, water heater 4.5kw, dishwasher 1.2kw, microwave 1.5kw, 2.5 ton AC roughly 4300 VA, gas furnace. Adding a 40 amp EV charger (9600 VA). Inspector here is picky. Fit?",
+      "expected_output": "220.83(A) under the 2020 NEC. Reports the default result and each alternate reading's amps explicitly, says whether the verdict changes under any of them, and tells the user which reading to confirm with the inspector. No hand arithmetic that disagrees with the script.",
+      "files": [],
+      "assertions": [
+        "States the default 220.83 result of 96.7 A and that it fits on 125 A",
+        "States that the load does NOT fit if the EV charger is taken at 125% (about 130.7 A)",
+        "Tells the user to confirm the EV charger treatment with the inspector before proceeding",
+        "Offers load management or a lower charger setting as an option that avoids an upgrade",
+        "Uses 2020 NEC rules (3 VA per sq ft, 8 kVA first tier for existing dwelling)"
+      ]
+    }
+  ]
+}

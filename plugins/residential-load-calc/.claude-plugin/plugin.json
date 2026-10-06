@@ -1,0 +1,13 @@
+{
+  "name": "residential-load-calc",
+  "description": "Residential electrical load calculation and panel capacity check (NEC 220.82, 220.83, 220.87 and 2026 Article 120): can this service take an EV charger, heat pump or other added load, and what are the options if not.",
+  "version": "0.1.0",
+  "author": {
+    "name": "chrisamz",
+    "url": "https://github.com/chrisamz"
+  },
+  "license": "MIT",
+  "keywords": ["electrical", "electrician", "NEC", "load-calculation", "ev-charger", "heat-pump", "panel-upgrade", "home-improvement"],
+  "homepage": "https://github.com/chrisamz/trades-skills",
+  "repository": "https://github.com/chrisamz/trades-skills"
+}

@@ -1,0 +1,11 @@
+{
+  "job": "New 2,400 sq ft all-electric house",
+  "edition": "2026",
+  "method": "120.82",
+  "system": {"voltage": 240, "service_rating_a": 200},
+  "dwelling": {"floor_area_sqft": 2400, "small_appliance_circuits": 3, "laundry_circuits": 1},
+  "appliances": [{"name": "Range", "va": 14000}, {"name": "Dryer", "va": 5500},
+                 {"name": "Water heater", "va": 4500}, {"name": "Dishwasher, disposal, microwave", "va": 3500}],
+  "hvac": [{"type": "heat_pump", "va": 5000}, {"type": "supplemental_heat", "va": 10000}],
+  "evse": [{"name": "48 A charger", "amps": 48}]
+}
