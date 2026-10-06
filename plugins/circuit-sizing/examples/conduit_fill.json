@@ -1,0 +1,20 @@
+{
+  "calc": "conduit_fill",
+  "job": "Range feed",
+  "raceway": "emt",
+  "trade_size": null,
+  "nipple": false,
+  "breaker_a": null,
+  "conductors": [
+    {
+      "size": "6",
+      "insulation": "thhn",
+      "count": 3
+    },
+    {
+      "size": "10",
+      "insulation": "thhn",
+      "count": 1
+    }
+  ]
+}

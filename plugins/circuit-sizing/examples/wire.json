@@ -1,0 +1,21 @@
+{
+  "calc": "wire",
+  "job": "48 A EV charger, 50 ft run",
+  "load_amps": 48,
+  "continuous": true,
+  "voltage": 240,
+  "phase": 1,
+  "material": "cu",
+  "wiring": "raceway",
+  "insulation": "thhn",
+  "terminal_temp": 75,
+  "ambient_c": 30,
+  "current_carrying_conductors": 2,
+  "length_ft": 50,
+  "max_voltage_drop_pct": 3,
+  "conduit": {
+    "raceway": "emt",
+    "insulation": "thhn",
+    "neutral": false
+  }
+}

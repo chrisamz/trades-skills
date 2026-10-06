@@ -1,0 +1,22 @@
+{
+  "name": "circuit-sizing",
+  "description": "Electrical circuit sizing with code-cited worksheets: wire size, breaker size, equipment ground, voltage drop, conduit fill and box fill, with temperature and bundling corrections.",
+  "version": "0.1.0",
+  "author": {
+    "name": "chrisamz",
+    "url": "https://github.com/chrisamz"
+  },
+  "license": "MIT",
+  "keywords": [
+    "electrical",
+    "electrician",
+    "NEC",
+    "wire-size",
+    "voltage-drop",
+    "conduit-fill",
+    "box-fill",
+    "breaker"
+  ],
+  "homepage": "https://github.com/chrisamz/trades-skills",
+  "repository": "https://github.com/chrisamz/trades-skills"
+}

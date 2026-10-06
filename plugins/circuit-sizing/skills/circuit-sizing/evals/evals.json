@@ -1,0 +1,103 @@
+{
+  "skill_name": "circuit-sizing",
+  "evals": [
+    {
+      "id": 1,
+      "name": "ev-charger-wire-and-conduit",
+      "prompt": "putting in a 48 amp hardwired EV charger, about 50 ft from the panel, copper THHN in EMT. what wire, breaker and ground, and what size EMT do i need?",
+      "expected_output": "6 AWG copper, 60 A breaker, 10 AWG ground; voltage drop about 0.98%; notes 4 AWG if terminals are 60 C. Conduit: two 6 AWG plus one 10 AWG THHN total 0.1225 sq in, just over the 0.1216 sq in allowed in 1/2 EMT, so 3/4 EMT.",
+      "files": [],
+      "assertions": [
+        "Gives 6 AWG copper conductors on a 60 A breaker",
+        "Gives a 10 AWG copper equipment ground",
+        "States the 125% continuous-load rule is why a 48 A charger needs a 60 A circuit",
+        "Gives 3/4 EMT as the minimum conduit (1/2 EMT is just over the 40% limit)",
+        "Mentions that 60 C terminations would require 4 AWG"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "homeowner-shed-voltage-drop",
+      "prompt": "I want to run power to my shed, its about 150 feet from the house. Planning a 20 amp 120v circuit with 12-2 romex, mostly for lights and a table saw. Is 12 gauge ok or will I have voltage drop problems?",
+      "expected_output": "12 AWG is the ampacity minimum for 20 A but voltage drop is high at 150 ft: about 7.9% at 16 A (or about 9.9% at a full 20 A). Recommends upsizing (6 AWG for 3% at 16 A; 8 AWG gets about 3.1%), explains that the 3% figure is a recommendation, notes NM cable cannot be used outdoors or underground, and says a permit and likely an electrician are needed.",
+      "files": [],
+      "assertions": [
+        "States that 12 AWG meets the ampacity minimum for a 20 A circuit",
+        "Gives a voltage drop percentage well above 3% for 12 AWG at 150 ft (about 7.9% at 16 A or about 9.9% at 20 A)",
+        "Recommends a specific larger conductor size to bring the drop near or under 3%",
+        "Says the 3% figure is a recommendation, not a code requirement",
+        "Warns that NM cable (Romex) is not permitted outdoors or underground for the run to the shed",
+        "Tells the homeowner a permit is needed and to involve a licensed electrician"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "conduit-count-and-box-fill",
+      "prompt": "two quick ones. how many #12 THHN can i get in 3/4 EMT? and i've got a 4 inch square box 1-1/2 deep with three 12-2 NM cables coming in, two receptacles on a mud ring, internal clamps. 2023 code. is the box big enough?",
+      "expected_output": "16 conductors of 12 AWG THHN in 3/4 EMT (and a note that more than three current-carrying conductors derates ampacity). Box: 6 conductors + 1 clamp + 4 for two devices + 1 for grounds = 12 allowances x 2.25 = 27.0 cu in; the 4 x 1-1/2 square box is 21.0 cu in, too small unless the mud ring's marked volume makes up 6 cu in.",
+      "files": [],
+      "assertions": [
+        "States 16 conductors of 12 AWG THHN fit in 3/4 EMT",
+        "Warns that more than three current-carrying conductors in the conduit reduces ampacity",
+        "Calculates 27.0 cu in required for the box",
+        "States the 4 x 1-1/2 square box is 21.0 cu in and is too small by itself",
+        "Says the mud ring's marked volume counts toward the total and may or may not make up the difference"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "condenser-nameplate-breaker-bigger-than-wire",
+      "prompt": "swapping out a condenser. new unit nameplate says MCA 24.3, max breaker 40. existing whip and run is #12 THHN copper in conduit, about 40 ft, on a 30 amp breaker. helper says #12 cant go on a 40 so we have to repull #10. whos right?",
+      "expected_output": "Uses the nameplate method: 12 AWG copper at 75 C is 25 A, which covers the 24.3 A minimum circuit ampacity, and the breaker may be up to the 40 A nameplate maximum because the small-conductor limit does not apply to this equipment (240.4(G), 440.22). So the existing 12 AWG is acceptable with 75 C terminations and the existing 30 A breaker can stay or go up to 40 A. Notes the 60 C termination or NM cable case would need 10 AWG, ground need not be larger than 12 AWG, voltage drop about 1.6%.",
+      "files": [],
+      "assertions": [
+        "States that 12 AWG copper THHN is adequate for a 24.3 A minimum circuit ampacity (25 A at 75 C)",
+        "Explains that the breaker may be as large as the 40 A nameplate maximum even though 12 AWG is normally limited to 20 A",
+        "Cites 240.4(G) or Article 440 as the reason",
+        "Notes the answer changes to 10 AWG if terminations are 60 C or the wiring is NM cable",
+        "Does not add another 125% on top of the nameplate minimum circuit ampacity"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "rooftop-stacked-derating",
+      "prompt": "rooftop job. three 30A 240V single phase circuits to three RTU heaters, each one is 24A continuous resistance heat. want to run all of them in one EMT across the roof, figure 50C ambient up there, about 60 ft. so 6 hots... actually the units need neutrals for controls so call it 9 current carrying. copper THHN, 75C lugs. what size wire and what size pipe with one ground?",
+      "expected_output": "30 A devices (24 A x 125%). 10 AWG fails: 40 A x 0.82 (50 C) x 0.70 (nine conductors) = 23.0 A, under the 24 A load. 8 AWG: 55 x 0.574 = 31.6 A, passes. Ground 10 AWG. Nine 8 AWG plus one 10 AWG THHN = 0.3505 sq in; 1 in. EMT allows 0.3456, so 1-1/4 in. EMT. May question whether control neutrals count as current-carrying.",
+      "files": [],
+      "assertions": [
+        "Applies both the 50 C ambient correction (0.82 at 90 C) and the nine-conductor adjustment (0.70) together",
+        "States that 10 AWG is not enough (about 23 A against the 24 A load)",
+        "Gives 8 AWG copper on 30 A breakers",
+        "Gives 1-1/4 in. EMT (1 in. is just over the 40% limit with nine 8 AWG and a 10 AWG ground)",
+        "Gives a 10 AWG copper equipment ground"
+      ]
+    },
+    {
+      "id": 6,
+      "name": "aluminum-feeder-detached-garage",
+      "prompt": "feeding a 100A subpanel in a detached garage, 180 ft from the house panel, underground in schedule 40 PVC. using aluminum XHHW-2, 4 wire. calculated load out there is 80 amps. 100A breaker in the house. what size aluminum, what ground, and what size PVC?",
+      "expected_output": "1 AWG aluminum is the ampacity minimum (100 A at 75 C) but drops 3.04% at 80 A over 180 ft, so 1/0 aluminum (2.41%) for a 3% target. Ground: 6 AWG aluminum for 100 A, increased in proportion to 4 AWG because the feeders were upsized. Three 1/0 plus one 4 AWG XHHW = 0.6289 sq in: 1-1/4 PVC 40 allows 0.5812, so 1-1/2 in. Mentions ground rod and separated neutral and ground at the garage.",
+      "files": [],
+      "assertions": [
+        "States 1 AWG aluminum is the minimum by ampacity for a 100 A feeder at 75 C",
+        "Gives the voltage drop for 1 AWG at about 3% (3.0 to 3.1%) and recommends 1/0 aluminum for a 3% target",
+        "States the equipment ground must be increased in proportion when the feeders are upsized (6 AWG becomes 4 AWG aluminum)",
+        "Gives 1-1/2 in. PVC Schedule 40 for three 1/0 and a 4 AWG ground (or the correct size for the conductors it chose)",
+        "Mentions the grounding electrode at the garage and keeping neutral and ground separate in the subpanel"
+      ]
+    },
+    {
+      "id": 7,
+      "name": "long-large-conductor-voltage-drop",
+      "prompt": "existing 3/0 copper in rigid steel conduit, 400 ft one way, 240V single phase, feeding a barn panel. measured load is about 160 amps at peak. customer complains of dim lights and motors running hot. whats the voltage drop and what would it take to get it to 3 percent?",
+      "expected_output": "Uses AC effective impedance for 3/0 in steel conduit (0.094 ohm per 1,000 ft), not DC resistance (0.0766): 2 x 400 x 0.094 x 160 / 1000 = 12.0 V, 5.0%. DC resistance alone would give 9.8 V, 4.1%, which understates it. To reach 3% needs 400 kcmil copper (2.99%), or options such as parallel runs or raising the voltage.",
+      "files": [],
+      "assertions": [
+        "Accounts for AC impedance or reactance in steel conduit rather than using DC resistance alone",
+        "Gives a voltage drop of about 12 V or 5% (accept 11.5 to 12.5 V)",
+        "States that 400 kcmil copper is needed to get to 3% in the same conduit type (accept 350 kcmil only if it shows it falls short)",
+        "Offers at least one alternative to replacing the conductors with one larger run (parallel conductors, PVC conduit, higher voltage, moving load)"
+      ]
+    }
+  ]
+}

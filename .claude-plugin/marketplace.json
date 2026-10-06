@@ -11,7 +11,32 @@
       "source": "./plugins/residential-load-calc",
       "description": "Residential electrical load calculation and panel capacity check (NEC 220.82, 220.83, 220.87 and 2026 Article 120): can this service take an EV charger, heat pump or other added load, and what are the options if not.",
       "category": "productivity",
-      "tags": ["electrical", "electrician", "NEC", "load-calculation", "ev-charger", "heat-pump", "panel-upgrade", "home-improvement"]
+      "tags": [
+        "electrical",
+        "electrician",
+        "NEC",
+        "load-calculation",
+        "ev-charger",
+        "heat-pump",
+        "panel-upgrade",
+        "home-improvement"
+      ]
+    },
+    {
+      "name": "circuit-sizing",
+      "source": "./plugins/circuit-sizing",
+      "description": "Electrical circuit sizing with code-cited worksheets: wire size, breaker size, equipment ground, voltage drop, conduit fill and box fill, with temperature and bundling corrections.",
+      "category": "productivity",
+      "tags": [
+        "electrical",
+        "electrician",
+        "NEC",
+        "wire-size",
+        "voltage-drop",
+        "conduit-fill",
+        "box-fill",
+        "breaker"
+      ]
     }
   ]
 }

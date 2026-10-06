@@ -1,0 +1,11 @@
+{
+  "calc": "voltage_drop",
+  "job": "Shed feeder",
+  "load_amps": 30,
+  "voltage": 240,
+  "phase": 1,
+  "material": "cu",
+  "size": "8",
+  "length_ft": 180,
+  "max_voltage_drop_pct": 3
+}

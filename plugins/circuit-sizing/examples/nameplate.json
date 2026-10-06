@@ -1,0 +1,17 @@
+{
+  "calc": "nameplate",
+  "job": "3 ton condenser",
+  "mca": 24.3,
+  "mocp": 40,
+  "voltage": 240,
+  "phase": 1,
+  "material": "cu",
+  "wiring": "raceway",
+  "terminal_temp": 75,
+  "ambient_c": 30,
+  "current_carrying_conductors": 2,
+  "length_ft": 40,
+  "max_voltage_drop_pct": 3,
+  "existing_size": null,
+  "breaker_a": null
+}

@@ -1,0 +1,24 @@
+{
+  "calc": "box_fill",
+  "job": "Receptacle, two 12-2 cables",
+  "edition": "2023",
+  "conductors": [
+    {
+      "size": "12",
+      "count": 4
+    }
+  ],
+  "grounds": {
+    "size": "12",
+    "count": 2
+  },
+  "internal_clamps": true,
+  "support_fittings": 0,
+  "devices": [
+    {
+      "largest_size": "12",
+      "count": 1
+    }
+  ],
+  "box_volume_in3": null
+}
