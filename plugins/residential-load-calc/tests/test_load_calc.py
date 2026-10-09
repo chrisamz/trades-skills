@@ -125,7 +125,35 @@ def test_30_day_recording_with_solar_is_refused():
     j = {"edition": "2023", "method": "220.87", "system": {"service_rating_a": 100},
          "evse": [{"amps": 32, "new": True}],
          "measured": {"peak_amps": 40, "basis": "recording_30d", "has_pv_or_storage": True}}
-    assert any("NOT PERMITTED" in f for f in L.run(j)["flags"])
+    r = full(j)
+    assert any("NOT PERMITTED" in f for f in r["flags"])
+    # 40 A x 1.25 + 32 A = 82 A is under the 100 A rating, but the method cannot be used here,
+    # so the worksheet must not report a fits verdict or anything derived from one.
+    assert r["calculated_amps"] == 82.0 and r["fits"] is None and len(r["not_permitted"]) == 1
+    assert r["charger_limits"] == []
+    md = L.to_markdown(r)
+    assert "NOT A VALID RESULT" in md and "FITS" not in md and "Smallest standard rating" not in md
+    assert "| yes |" not in md and md.count("| not valid |") == 2
+    # same job on 12 months of utility data is permitted and gets a normal verdict
+    j["measured"]["basis"] = "utility_12mo"
+    r = full(j)
+    assert r["fits"] is True and r["not_permitted"] == [] and "**FITS**" in L.to_markdown(r)
+
+
+def test_optional_method_under_100a_gives_no_verdict():
+    j = job(method="220.82", evse=[])
+    j["system"]["service_rating_a"] = 60
+    r = full(j)
+    assert r["fits"] is None and "100 A or larger" in r["not_permitted"][0]
+    md = L.to_markdown(r)
+    assert "NOT A VALID RESULT" in md and "DOES NOT FIT" not in md
+    # under 220.83 the same service gets a verdict; only its 220.82 cross-check row is marked
+    j["method"] = "220.83"
+    j["appliances"].append({"name": "Hot tub", "va": 6000, "new": True})
+    r = full(j)
+    assert r["fits"] is False and r["not_permitted"] == []
+    md = L.to_markdown(r)
+    assert "**DOES NOT FIT**" in md and md.count("| not valid |") == 1
 
 
 def test_bad_input_is_rejected():

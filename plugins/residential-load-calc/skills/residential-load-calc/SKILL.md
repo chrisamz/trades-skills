@@ -53,7 +53,7 @@ The script prints a markdown worksheet. Use `--format json` if the numbers feed 
 
 ### 4. Report
 
-Lead with the verdict in one sentence: calculated amps against the rating, fits or doesn't, and the headroom. Then give the worksheet as the script printed it; it is meant to be handed to an inspector, so don't reword the line items or drop the section references.
+Lead with the verdict in one sentence: calculated amps against the rating, fits or doesn't, and the headroom. If the worksheet says "NOT A VALID RESULT", the method cannot be used for this job as entered: lead with that and the reason it gives, don't describe the amps figure as fitting or not fitting, and rerun with the method it points to (or say the case is out of scope). Then give the worksheet as the script printed it; it is meant to be handed to an inspector, so don't reword the line items or drop the section references.
 
 Then cover, briefly:
 

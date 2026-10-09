@@ -10,6 +10,7 @@ Answers "can this house service take the added load?" with a worksheet an inspec
 - Knows the 2017, 2020, 2023 and 2026 editions. The 2026 NEC moves these rules to Article 120 and changes the factors; 2026 support is provisional and flagged as such on every run.
 - Cites the code section for every line without reproducing code text.
 - Shows how the answer changes under other readings an inspector may require, such as an EV charger taken at 100% or 125% instead of inside the demand tiers.
+- Gives no "fits" verdict when the method is not permitted for the job as entered (the optional method on a service under 100 A, or a 30-day recording on a service with solar); the worksheet says so in place of the verdict and gives the reason.
 - When the load does not fit, lists the options: load management, recorded demand, or the smallest standard service size that works.
 
 ## What it runs
