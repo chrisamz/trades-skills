@@ -348,7 +348,7 @@ def calc_existing_2026(job, ed, flags):
     return lines + scratch, steps, demand + new_total, "83"
 
 
-def calc_measured(job, ed, evse_treatment, flags):
+def calc_measured(job, ed, evse_treatment, flags, blocked):
     m = job.get("measured") or {}
     volts = job["system"]["voltage"]
     pf = num(m.get("power_factor") or 1.0, "power_factor")
@@ -372,6 +372,9 @@ def calc_measured(job, ed, evse_treatment, flags):
         if m.get("has_pv_or_storage"):
             flags.append("NOT PERMITTED AS ENTERED: the 30-day exception cannot be used where the service has "
                          "solar, wind or peak-shaving equipment. Use 12 months of utility data or a calculated method.")
+            blocked.append(f"The 30-day recording exception ({sec(ed, '87')} Exception) is not available where "
+                           "the service has solar, wind or peak-shaving equipment. Use 12 months of utility "
+                           f"data, or a calculated method ({sec(ed, '83')}).")
     elif m.get("has_pv_or_storage"):
         flags.append("Solar or storage on site: utility interval data can show net import, which hides the true "
                      "house peak. Confirm the peak is gross consumption before relying on this result.")
@@ -437,6 +440,7 @@ def run(job, evse_treatment=None, hvac_83a=None):
         raise InputError("options.hvac_83a must be tiered or full")
 
     flags = []
+    blocked = []
     readings = {"evse": None, "hvac_83a": None}
     has_evse = bool(job.get("evse"))
     if method == "220.82":
@@ -446,6 +450,9 @@ def run(job, evse_treatment=None, hvac_83a=None):
             readings["evse"] = evse_treatment
         if 0 < rating < 100:
             flags.append(f"{cite} applies only where the service or feeder is 100 A or larger. Use the standard method.")
+            blocked.append(f"The optional method ({cite}) applies only where the service or feeder is 100 A or "
+                           f"larger; this one is {rating:g} A. Use the standard method "
+                           f"({ed['article']} Part III), which this worksheet does not implement.")
     elif method == "220.83":
         if ed["article"] == "120":
             lines, steps, total, part = calc_existing_2026(job, ed, flags)
@@ -459,7 +466,7 @@ def run(job, evse_treatment=None, hvac_83a=None):
     else:
         if evse_treatment == "general":
             evse_treatment = "full"
-        lines, steps, total = calc_measured(job, ed, evse_treatment, flags)
+        lines, steps, total = calc_measured(job, ed, evse_treatment, flags, blocked)
         cite = sec(ed, "87")
         if any(e.get("new") for e in job.get("evse", [])):
             readings["evse"] = evse_treatment
@@ -484,11 +491,13 @@ def run(job, evse_treatment=None, hvac_83a=None):
         "service_rating_a": rating or None,
         "readings": readings,
         "flags": flags,
+        "not_permitted": blocked,
         "minimum_standard_size_a": next((s for s in STANDARD_SIZES_A if s >= amps), None),
         "notice": NOTICE,
     }
     if rating:
-        result["fits"] = amps <= rating
+        # No fits verdict when the method cannot be used for the job as entered.
+        result["fits"] = None if blocked else amps <= rating
         result["headroom_a"] = round(rating - amps, 1)
         result["utilization_pct"] = round(100 * amps / rating, 1)
     return result
@@ -518,7 +527,7 @@ def reading_label(readings):
 def row(label, r, used=False, evse=None, hvac=None):
     return {"reading": label, "evse": EVSE_LABEL.get(evse, ""), "hvac": HVAC_LABEL.get(hvac, ""),
             "total_va": r["total_va"], "calculated_amps": r["calculated_amps"],
-            "fits": r.get("fits"), "used": used}
+            "fits": r.get("fits"), "valid": not r.get("not_permitted"), "used": used}
 
 
 def reading_combos(job, base):
@@ -564,7 +573,7 @@ def charger_limits(job, base):
     """Largest load-management setpoint that fits, for each reading where the nameplate does not."""
     rating = base.get("service_rating_a")
     new = [e for e in job.get("evse", []) if e.get("new") and e.get("ems_limit_amps") is None]
-    if not rating or len(new) != 1:
+    if not rating or len(new) != 1 or base.get("not_permitted"):
         return []
     volts = base["voltage"]
     nameplate_va = item_va(new[0], volts, "EVSE")
@@ -627,11 +636,19 @@ def to_markdown(r):
     out.append("")
     out.append(f"**{r['total_va']:,.0f} VA / {r['voltage']:g} V = {r['calculated_amps']:.1f} A**")
     out.append("")
-    if r.get("service_rating_a"):
+    if r.get("not_permitted"):
+        rated = f" against the {r['service_rating_a']:g} A rating" if r.get("service_rating_a") else ""
+        out.append("**NOT A VALID RESULT: this method is not permitted for the job as entered.** The "
+                   f"{r['calculated_amps']:.1f} A above{rated} is arithmetic only and does not show whether the "
+                   "service or feeder has capacity.")
+        out.append("")
+        for reason in r["not_permitted"]:
+            out.append(f"- {reason}")
+    elif r.get("service_rating_a"):
         verdict = "FITS" if r["fits"] else "DOES NOT FIT"
         out.append(f"Service or feeder rating: {r['service_rating_a']:g} A. **{verdict}** "
                    f"({r['utilization_pct']:.1f}% of rating, headroom {r['headroom_a']:+.1f} A).")
-    if r.get("minimum_standard_size_a"):
+    if r.get("minimum_standard_size_a") and not r.get("not_permitted"):
         out.append(f"Smallest standard rating that carries this load: {r['minimum_standard_size_a']} A.")
     out.append("")
     alts = r.get("alternates") or []
@@ -663,6 +680,8 @@ def to_markdown(r):
         out.append("|" + "---|" * len(head) + "---:|---:|---|")
         for a in alts:
             fits = "" if a["fits"] is None else ("yes" if a["fits"] else "**no**")
+            if r.get("not_permitted") or not a.get("valid", True):
+                fits = "not valid"
             c = cells(a)
             if a["used"]:
                 c[-1] = (c[-1] + " (used above)").strip()

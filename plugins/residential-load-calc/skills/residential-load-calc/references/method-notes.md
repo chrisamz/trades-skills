@@ -29,7 +29,7 @@ States adopt editions years apart and amend them. Always confirm the adopted edi
 
 ## 2. 220.82 optional method
 
-Applies to one dwelling unit served by a single 120/240 V or 208Y/120 V 3-wire service or feeder of 100 A or more.
+Applies to one dwelling unit served by a single 120/240 V or 208Y/120 V 3-wire service or feeder of 100 A or more. If the rating entered is under 100 A the script still shows the arithmetic, but prints "NOT A VALID RESULT" in place of a fits verdict (`fits` is null and `not_permitted` carries the reason in the JSON output).
 
 General loads are summed, then the first tier is taken at 100% and the rest at 40%:
 
@@ -71,7 +71,7 @@ Existing load is the recorded maximum demand times 125%. New load is added on to
 Data that qualifies:
 
 - maximum demand for a one-year period, usually utility interval data; or
-- by exception, a continuous recording of at least 30 days of 15-minute average demand on the highest loaded phase, taken while the home is occupied, and adjusted to include the larger of heating or cooling and other seasonal loads. The exception is not available where the service has solar, wind or peak shaving.
+- by exception, a continuous recording of at least 30 days of 15-minute average demand on the highest loaded phase, taken while the home is occupied, and adjusted to include the larger of heating or cooling and other seasonal loads. The exception is not available where the service has solar, wind or peak shaving. A job entered that way gets "NOT A VALID RESULT" in place of a fits verdict, the same as an optional-method run under 100 A; the script never reports that a load fits under a method the job does not qualify for.
 
 Practical traps:
 
